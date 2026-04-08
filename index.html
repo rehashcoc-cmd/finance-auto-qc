@@ -4,7 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <title>Finance Auto QC - v2</title>
+  <title>Finance Auto QC - Reset</title>
+</head>
+<body>
+<script>
+(function () {
+  const html = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Finance Auto QC - reset RDPRM</title>
   <style>
     :root{
       --bg:#07111f; --bg2:#0b1730; --text:#edf4ff; --muted:#9db2d1; --line:#27446d;
@@ -72,7 +83,7 @@
   <div class="app">
     <div class="topbar">
       <h1>Finance Auto QC</h1>
-      <p>Version mise à jour avec RDPRM, assurance remplacement, renonciation de dette, 66/78 mois et obligation totale.</p>
+      <p>Reset vide toutes les cases, garde le taux à 8.99% et garde RDPRM à 150$.</p>
     </div>
 
     <div class="layout">
@@ -80,27 +91,27 @@
         <div class="group">
           <h2>Véhicule</h2>
           <div class="grid2">
-            <div class="field"><label for="prixVehicule">Prix véhicule</label><input id="prixVehicule" inputmode="decimal" type="text" value="17995"></div>
-            <div class="field"><label for="miseDeFonds">Comptant</label><input id="miseDeFonds" inputmode="decimal" type="text" value="1500"></div>
+            <div class="field"><label for="prixVehicule">Prix véhicule</label><input id="prixVehicule" inputmode="decimal" type="text" value=""></div>
+            <div class="field"><label for="miseDeFonds">Comptant</label><input id="miseDeFonds" inputmode="decimal" type="text" value=""></div>
           </div>
         </div>
 
         <div class="group">
           <h2>Échange</h2>
           <div class="grid2">
-            <div class="field"><label for="echange">Valeur échange</label><input id="echange" inputmode="decimal" type="text" value="4500"></div>
-            <div class="field"><label for="soldeEchange">Solde dû</label><input id="soldeEchange" inputmode="decimal" type="text" value="8500"></div>
+            <div class="field"><label for="echange">Valeur échange</label><input id="echange" inputmode="decimal" type="text" value=""></div>
+            <div class="field"><label for="soldeEchange">Solde dû</label><input id="soldeEchange" inputmode="decimal" type="text" value=""></div>
           </div>
         </div>
 
         <div class="group">
           <h2>Frais / Protections</h2>
           <div class="grid2">
-            <div class="field"><label for="frais">Frais</label><input id="frais" inputmode="decimal" type="text" value="800"></div>
-            <div class="field"><label for="garantie">Garantie</label><input id="garantie" inputmode="decimal" type="text" value="2800"></div>
-            <div class="field"><label for="rdprm">RDPRM (non taxable)</label><input id="rdprm" inputmode="decimal" type="text" value="0"></div>
-            <div class="field"><label for="assRemplacement">Ass. remplacement (9%)</label><input id="assRemplacement" inputmode="decimal" type="text" value="0"></div>
-            <div class="field full"><label for="renonciationDette">Renonciation de dette (15%)</label><input id="renonciationDette" inputmode="decimal" type="text" value="0"></div>
+            <div class="field"><label for="frais">Frais</label><input id="frais" inputmode="decimal" type="text" value=""></div>
+            <div class="field"><label for="garantie">Garantie</label><input id="garantie" inputmode="decimal" type="text" value=""></div>
+            <div class="field"><label for="rdprm">RDPRM (non taxable)</label><input id="rdprm" inputmode="decimal" type="text" value="150"></div>
+            <div class="field"><label for="assRemplacement">Ass. remplacement (9%)</label><input id="assRemplacement" inputmode="decimal" type="text" value=""></div>
+            <div class="field full"><label for="renonciationDette">Renonciation de dette (15%)</label><input id="renonciationDette" inputmode="decimal" type="text" value=""></div>
           </div>
         </div>
 
@@ -165,7 +176,7 @@
           <div class="item"><div class="k">Obligation totale</div><div class="v" id="obligationTotale">0,00 $</div></div>
         </div>
 
-        <div class="note">RDPRM non taxable. Assurance remplacement taxée à 9%. Renonciation de dette taxée normal QC.</div>
+        <div class="note">Reset garde le taux d’intérêt à 8.99% et garde RDPRM à 150$.</div>
       </section>
     </div>
   </div>
@@ -286,15 +297,15 @@
       }
 
       function reinitialiser() {
-        $('prixVehicule').value = '17995';
-        $('miseDeFonds').value = '1500';
-        $('echange').value = '4500';
-        $('soldeEchange').value = '8500';
-        $('frais').value = '800';
-        $('garantie').value = '2800';
-        $('rdprm').value = '0';
-        $('assRemplacement').value = '0';
-        $('renonciationDette').value = '0';
+        $('prixVehicule').value = '';
+        $('miseDeFonds').value = '';
+        $('echange').value = '';
+        $('soldeEchange').value = '';
+        $('frais').value = '';
+        $('garantie').value = '';
+        $('rdprm').value = '150';
+        $('assRemplacement').value = '';
+        $('renonciationDette').value = '';
         $('terme').value = '84';
         $('tauxInteret').value = '8.99';
         $('inclureAssVie').checked = true;
@@ -317,8 +328,13 @@
 
       $('btnCalculer').addEventListener('click', calculer);
       $('btnReset').addEventListener('click', reinitialiser);
-      calculer();
+      reinitialiser();
     })();
   </script>
+</body>
+</html>`;
+  document.write(html);
+})();
+</script>
 </body>
 </html>
