@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#07111f" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Finance Auto QC" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icon-180.png" />
+  <title>Finance Auto QC</title>
+  <style>
+    :root{
+      --bg:#07111f; --bg2:#0b1730; --card:#0d1b33; --soft:#142544; --text:#edf4ff;
+      --muted:#9db2d1; --line:#27446d; --cyan:#31c2ff; --green:#22c55e; --green2:#16a34a;
+      --shadow:0 14px 40px rgba(0,0,0,.28); --radius:18px;
+    }
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Inter,Arial,Helvetica,sans-serif; color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(49,194,255,.10), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(34,197,94,.10), transparent 26%),
+        linear-gradient(135deg,var(--bg),var(--bg2));
+    }
+    .app{max-width:1280px; margin:0 auto; padding:12px; min-height:100dvh; display:flex; flex-direction:column; gap:10px;}
+    .topbar{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 14px; background:rgba(13,27,51,.78); border:1px solid var(--line); border-radius:18px; backdrop-filter:blur(10px); box-shadow:var(--shadow);}
+    .brand h1{margin:0; font-size:clamp(1rem,2vw,1.35rem);}
+    .brand p{margin:4px 0 0; color:var(--muted); font-size:.84rem;}
+    .badge{white-space:nowrap; padding:7px 11px; border-radius:999px; border:1px solid rgba(49,194,255,.35); background:rgba(49,194,255,.12); color:#cfefff; font-size:.8rem; font-weight:700;}
+    .layout{display:grid; grid-template-columns:1.08fr .92fr; gap:10px; flex:1;}
+    .panel{background:rgba(13,27,51,.82); border:1px solid var(--line); border-radius:20px; box-shadow:var(--shadow); padding:12px;}
+    .left{display:grid; grid-template-columns:1fr 1fr; gap:10px; align-content:start;}
+    .group{background:linear-gradient(180deg, rgba(20,37,68,.95), rgba(11,22,42,.95)); border:1px solid rgba(68,104,154,.45); border-radius:16px; padding:11px;}
+    .group h2{margin:0 0 10px; color:var(--cyan); font-size:.92rem; letter-spacing:.08em; text-transform:uppercase;}
+    .grid2{display:grid; grid-template-columns:1fr 1fr; gap:9px;}
+    .field{display:flex; flex-direction:column; gap:6px; min-width:0;}
+    .field.full{grid-column:1/-1}
+    .field label{font-size:.84rem; color:#d9e8ff;}
+    input,select{
+      width:100%; height:44px; border-radius:13px; border:1px solid rgba(92,127,177,.42);
+      background:rgba(255,255,255,.05); color:var(--text); padding:0 12px; font-size:.98rem; outline:none;
+    }
+    input:focus,select:focus{border-color:var(--cyan); box-shadow:0 0 0 3px rgba(49,194,255,.15);}
+    .checks{display:grid; grid-template-columns:1fr 1fr; gap:8px 12px; margin-top:2px;}
+    .check{display:flex; align-items:center; gap:8px; color:#e4efff; font-size:.92rem;}
+    .check input{width:auto; height:auto; transform:scale(1.06); accent-color:#1e8cff;}
+    .actions{grid-column:1/-1; display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
+    button{border:none; border-radius:14px; height:46px; padding:0 16px; font-size:1rem; font-weight:800; cursor:pointer;}
+    .primary{color:white; background:linear-gradient(135deg,var(--green2),var(--green)); min-width:132px;}
+    .secondary{color:white; background:#213453; border:1px solid rgba(92,127,177,.42); min-width:132px;}
+    .hint{color:var(--muted); font-size:.8rem; margin-left:auto;}
+    .right{display:grid; grid-template-rows:auto auto 1fr auto; gap:10px;}
+    .hero{background:linear-gradient(135deg, rgba(34,197,94,.16), rgba(49,194,255,.16)); border:1px solid rgba(100,173,255,.35); border-radius:18px; padding:12px 14px;}
+    .hero .label{color:#c7dbf7; font-size:.88rem; margin-bottom:6px;}
+    .hero .value{font-size:clamp(1.55rem,3vw,2.3rem); font-weight:900; line-height:1;}
+    .payments{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px;}
+    .pay{background:linear-gradient(180deg, rgba(20,37,68,.95), rgba(11,22,42,.95)); border:1px solid rgba(68,104,154,.45); border-radius:16px; padding:11px;}
+    .pay .k{color:var(--muted); font-size:.82rem; margin-bottom:5px;}
+    .pay .v{font-size:clamp(1rem,1.8vw,1.35rem); font-weight:900;}
+    .summary{display:grid; grid-template-columns:1fr 1fr; gap:9px; align-content:start;}
+    .item{background:rgba(7,17,31,.55); border:1px solid rgba(68,104,154,.42); border-radius:14px; padding:11px 12px; display:flex; justify-content:space-between; gap:10px; align-items:center;}
+    .item .k{color:#b2c6e4; font-size:.88rem;}
+    .item .v{font-size:1rem; font-weight:850; white-space:nowrap;}
+    .foot{color:var(--muted); font-size:.78rem; line-height:1.4; padding:0 2px;}
+    @media (max-width: 980px){ .layout{grid-template-columns:1fr;} }
+    @media (max-width: 760px){
+      .app{padding:8px} .brand p,.badge,.hint{display:none}
+      .left{grid-template-columns:1fr} .payments{grid-template-columns:1fr 1fr 1fr}
+      .summary{grid-template-columns:1fr 1fr} .checks{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width: 480px){
+      .topbar{padding:10px 12px} .panel{padding:10px} .group{padding:10px}
+      .layout,.left,.right,.grid2,.summary,.checks,.payments{gap:8px}
+      input,select,button{height:42px}
+      .field label{font-size:.8rem}
+      .summary{grid-template-columns:1fr}
+      .payments{grid-template-columns:1fr}
+      .checks{grid-template-columns:1fr}
+      .hero .value{font-size:1.75rem}
+      .item{padding:10px 11px}
+      .pay{padding:10px}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="topbar">
+      <div class="brand">
+        <h1>Finance Auto QC</h1>
+        <p>Ajoute cette page à l’écran d’accueil dans Safari.</p>
+      </div>
+      <div class="badge">PWA iPhone</div>
+    </div>
+
+    <div class="layout">
+      <section class="panel left">
+        <div class="group">
+          <h2>Véhicule</h2>
+          <div class="grid2">
+            <div class="field">
+              <label for="prixVehicule">Prix véhicule</label>
+              <input id="prixVehicule" type="number" min="0" step="0.01" value="17995" />
+            </div>
+            <div class="field">
+              <label for="miseDeFonds">Comptant</label>
+              <input id="miseDeFonds" type="number" min="0" step="0.01" value="1500" />
+            </div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Échange</h2>
+          <div class="grid2">
+            <div class="field">
+              <label for="echange">Valeur échange</label>
+              <input id="echange" type="number" min="0" step="0.01" value="4500" />
+            </div>
+            <div class="field">
+              <label for="soldeEchange">Solde dû</label>
+              <input id="soldeEchange" type="number" min="0" step="0.01" value="8500" />
+            </div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Frais</h2>
+          <div class="grid2">
+            <div class="field">
+              <label for="frais">Frais</label>
+              <input id="frais" type="number" min="0" step="0.01" value="800" />
+            </div>
+            <div class="field">
+              <label for="garantie">Garantie</label>
+              <input id="garantie" type="number" min="0" step="0.01" value="2800" />
+            </div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Financement</h2>
+          <div class="grid2">
+            <div class="field">
+              <label for="terme">Terme</label>
+              <select id="terme">
+                <option value="36">36 mois</option>
+                <option value="48">48 mois</option>
+                <option value="60">60 mois</option>
+                <option value="72">72 mois</option>
+                <option value="84" selected>84 mois</option>
+                <option value="96">96 mois</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="tauxInteret">Taux (%)</label>
+              <input id="tauxInteret" type="number" min="0" step="0.01" value="8.99" />
+            </div>
+            <div class="field full">
+              <div class="checks">
+                <label class="check"><input id="inclureAssVie" type="checkbox" checked /> Ass. vie</label>
+                <label class="check"><input id="inclureAssInvalidite" type="checkbox" checked /> Ass. invalidité</label>
+                <label class="check"><input id="appliquerTaxes" type="checkbox" checked /> Taxes QC</label>
+                <label class="check"><input id="taxerFrais" type="checkbox" checked /> Taxer frais/garantie</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="primary" onclick="calculer()">Calculer</button>
+          <button class="secondary" onclick="reinitialiser()">Reset</button>
+        </div>
+      </section>
+
+      <section class="panel right">
+        <div class="hero">
+          <div class="label">Montant financé total</div>
+          <div class="value" id="montantFinance">0,00 $</div>
+        </div>
+
+        <div class="payments">
+          <div class="pay"><div class="k">Mensuel</div><div class="v" id="paiementMensuel">0,00 $</div></div>
+          <div class="pay"><div class="k">Bihebdo</div><div class="v" id="paiementBihebdo">0,00 $</div></div>
+          <div class="pay"><div class="k">Hebdo</div><div class="v" id="paiementHebdo">0,00 $</div></div>
+        </div>
+
+        <div class="summary">
+          <div class="item"><div class="k">Sous-total</div><div class="v" id="sousTotal">0,00 $</div></div>
+          <div class="item"><div class="k">Taxes totales</div><div class="v" id="taxesTotales">0,00 $</div></div>
+          <div class="item"><div class="k">Équité échange</div><div class="v" id="equiteEchange">0,00 $</div></div>
+          <div class="item"><div class="k">Sur échange</div><div class="v" id="surEchangeAjoute">0,00 $</div></div>
+          <div class="item"><div class="k">Capital avant ass.</div><div class="v" id="capitalAvantAssurance">0,00 $</div></div>
+          <div class="item"><div class="k">Total assurances</div><div class="v" id="totalAssurances">0,00 $</div></div>
+          <div class="item"><div class="k">Ass. vie</div><div class="v" id="assuranceVie">0,00 $</div></div>
+          <div class="item"><div class="k">Ass. invalidité</div><div class="v" id="assuranceInvalidite">0,00 $</div></div>
+        </div>
+
+        <div class="foot">
+          Pour iPhone: ouvre le site dans Safari, touche Partager, puis “Sur l’écran d’accueil”.
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+    }
+    const fmt = new Intl.NumberFormat('fr-CA', { style: 'currency', currency: 'CAD' });
+    const $ = (id) => document.getElementById(id);
+    function getNum(id){ const v = parseFloat($(id).value); return isNaN(v) ? 0 : v; }
+    function getChecked(id){ return $(id).checked; }
+    function setText(id, value){ $(id).textContent = value; }
+
+    function calculerPaiement(principal, annualRatePercent, years, periodsPerYear) {
+      const totalPeriods = years * periodsPerYear;
+      const ratePerPeriod = (annualRatePercent / 100) / periodsPerYear;
+      if (principal <= 0 || totalPeriods <= 0) return 0;
+      if (annualRatePercent <= 0) return principal / totalPeriods;
+      return principal * ratePerPeriod / (1 - Math.pow(1 + ratePerPeriod, -totalPeriods));
+    }
+    function getTauxAssuranceVie(terme){
+      if (terme <= 48) return 0.030;
+      if (terme <= 60) return 0.037;
+      if (terme <= 72) return 0.046;
+      if (terme <= 84) return 0.059;
+      return 0.063;
+    }
+    function getTauxAssuranceInvalidite(terme){
+      if (terme <= 48) return 0.040;
+      if (terme <= 60) return 0.046;
+      if (terme <= 72) return 0.052;
+      if (terme <= 84) return 0.057;
+      return 0.060;
+    }
+
+    function calculer() {
+      const prixVehicule = getNum('prixVehicule');
+      const miseDeFonds = getNum('miseDeFonds');
+      const echange = getNum('echange');
+      const soldeEchange = getNum('soldeEchange');
+      const frais = getNum('frais');
+      const garantie = getNum('garantie');
+      const termeMois = getNum('terme');
+      const tauxInteret = getNum('tauxInteret');
+      const appliquerTaxes = getChecked('appliquerTaxes');
+      const taxerFrais = getChecked('taxerFrais');
+      const inclureAssVie = getChecked('inclureAssVie');
+      const inclureAssInvalidite = getChecked('inclureAssInvalidite');
+
+      const extras = frais + garantie;
+      const equiteEchange = Math.max(0, echange - soldeEchange);
+      const surEchangeAjoute = Math.max(0, soldeEchange - echange);
+      const taxableBaseVehicule = Math.max(0, prixVehicule - equiteEchange);
+      const taxableBase = taxableBaseVehicule + (taxerFrais ? extras : 0);
+      const taxesTotales = appliquerTaxes ? taxableBase * 0.14975 : 0;
+      const sousTotal = prixVehicule + extras;
+      const capitalAvantAssurance = Math.max(0, taxableBaseVehicule + extras + taxesTotales + surEchangeAjoute - miseDeFonds);
+      const assuranceVie = inclureAssVie ? capitalAvantAssurance * getTauxAssuranceVie(termeMois) : 0;
+      const assuranceInvalidite = inclureAssInvalidite ? capitalAvantAssurance * getTauxAssuranceInvalidite(termeMois) : 0;
+      const totalAssurances = assuranceVie + assuranceInvalidite;
+      const montantFinance = capitalAvantAssurance + totalAssurances;
+      const years = termeMois / 12;
+
+      setText('sousTotal', fmt.format(sousTotal));
+      setText('taxesTotales', fmt.format(taxesTotales));
+      setText('equiteEchange', fmt.format(equiteEchange));
+      setText('surEchangeAjoute', fmt.format(surEchangeAjoute));
+      setText('capitalAvantAssurance', fmt.format(capitalAvantAssurance));
+      setText('assuranceVie', fmt.format(assuranceVie));
+      setText('assuranceInvalidite', fmt.format(assuranceInvalidite));
+      setText('totalAssurances', fmt.format(totalAssurances));
+      setText('montantFinance', fmt.format(montantFinance));
+      setText('paiementMensuel', fmt.format(calculerPaiement(montantFinance, tauxInteret, years, 12)));
+      setText('paiementBihebdo', fmt.format(calculerPaiement(montantFinance, tauxInteret, years, 26)));
+      setText('paiementHebdo', fmt.format(calculerPaiement(montantFinance, tauxInteret, years, 52)));
+
+      const state = {
+        prixVehicule, miseDeFonds, echange, soldeEchange, frais, garantie,
+        termeMois, tauxInteret, appliquerTaxes, taxerFrais, inclureAssVie, inclureAssInvalidite
+      };
+      localStorage.setItem('finance-auto-qc-state', JSON.stringify(state));
+    }
+
+    function reinitialiser() {
+      const defaults = {
+        prixVehicule: 17995, miseDeFonds: 1500, echange: 4500, soldeEchange: 8500,
+        frais: 800, garantie: 2800, termeMois: 84, tauxInteret: 8.99,
+        inclureAssVie: true, inclureAssInvalidite: true, appliquerTaxes: true, taxerFrais: true
+      };
+      $('prixVehicule').value = defaults.prixVehicule;
+      $('miseDeFonds').value = defaults.miseDeFonds;
+      $('echange').value = defaults.echange;
+      $('soldeEchange').value = defaults.soldeEchange;
+      $('frais').value = defaults.frais;
+      $('garantie').value = defaults.garantie;
+      $('terme').value = defaults.termeMois;
+      $('tauxInteret').value = defaults.tauxInteret;
+      $('inclureAssVie').checked = defaults.inclureAssVie;
+      $('inclureAssInvalidite').checked = defaults.inclureAssInvalidite;
+      $('appliquerTaxes').checked = defaults.appliquerTaxes;
+      $('taxerFrais').checked = defaults.taxerFrais;
+      calculer();
+    }
+
+    function restoreState() {
+      try {
+        const raw = localStorage.getItem('finance-auto-qc-state');
+        if (!raw) return calculer();
+        const s = JSON.parse(raw);
+        $('prixVehicule').value = s.prixVehicule ?? 17995;
+        $('miseDeFonds').value = s.miseDeFonds ?? 1500;
+        $('echange').value = s.echange ?? 4500;
+        $('soldeEchange').value = s.soldeEchange ?? 8500;
+        $('frais').value = s.frais ?? 800;
+        $('garantie').value = s.garantie ?? 2800;
+        $('terme').value = s.termeMois ?? 84;
+        $('tauxInteret').value = s.tauxInteret ?? 8.99;
+        $('inclureAssVie').checked = s.inclureAssVie ?? true;
+        $('inclureAssInvalidite').checked = s.inclureAssInvalidite ?? true;
+        $('appliquerTaxes').checked = s.appliquerTaxes ?? true;
+        $('taxerFrais').checked = s.taxerFrais ?? true;
+      } catch(e) {}
+      calculer();
+    }
+
+    [
+      'prixVehicule','miseDeFonds','echange','soldeEchange','frais','garantie','terme',
+      'tauxInteret','inclureAssVie','inclureAssInvalidite','appliquerTaxes','taxerFrais'
+    ].forEach(id => {
+      const el = $(id);
+      el.addEventListener('input', calculer);
+      el.addEventListener('change', calculer);
+    });
+
+    restoreState();
+  </script>
+</body>
+</html>
